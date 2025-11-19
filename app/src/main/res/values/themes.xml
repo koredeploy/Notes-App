@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Bankaapp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="App.Theme.Bankaapp" parent="Base.Theme.SplashScreen"  />
+    <style name="Theme.Bankaapp.SplashScreen" parent="Theme.SplashScreen" >
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo </item>
+    <item name="windowSplashScreenBackground" >@color/darkblue</item>
+        <item name="windowSplashScreenAnimationDuration">100</item>
+        <item name="postSplashScreenTheme">@style/Theme.Bankaapp</item>
+    </style>
+</resources>
+
+
+
