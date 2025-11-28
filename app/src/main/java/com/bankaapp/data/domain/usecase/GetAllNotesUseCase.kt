@@ -20,3 +20,29 @@ class PostNoteUseCase @Inject constructor(
         return noteRepository.postNote(id, title, content)
     }
 }
+
+class GetNoteByIdUseCase @Inject constructor(
+    private val noteRepository: NoteRepository
+) {
+    suspend operator fun invoke(noteId: String): Result<Note?> {
+        return noteRepository.getNoteById(noteId)
+    }
+}
+
+
+class UpdateNoteUseCase @Inject constructor(
+    private val noteRepository: NoteRepository
+) {
+    suspend operator fun invoke(id: String, title: String, content: String): Result<Note> {
+        return noteRepository.updateNote(id, title, content)
+    }
+}
+
+
+class DeleteNoteUseCase @Inject constructor(
+    private val noteRepository: NoteRepository
+) {
+    suspend operator fun invoke(noteId: String): Result<Unit> {
+        return noteRepository.deleteNote(noteId)
+    }
+}

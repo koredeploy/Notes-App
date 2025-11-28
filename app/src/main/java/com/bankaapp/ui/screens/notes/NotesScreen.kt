@@ -160,9 +160,9 @@ fun NotesScreen(
                                     NoteCard(
                                         note = note,
                                         onClick = {
-                                            // Navigate to note detail or edit screen
-                                            // navController.navigate("${BankaScreens.NoteDetailScreen}/${note.id}")
+                                            navController.navigate(BankaScreens.NotesDetailScreen(noteId = note.id))
                                         }
+
                                     )
                                 }
                             }
@@ -196,7 +196,7 @@ fun NotesScreen(
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 80.dp)
+                    .padding(end = 8.dp, bottom = 50.dp)
             ) {
                 CustomDropdownMenu(
                     expanded = showDropdownMenu,

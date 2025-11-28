@@ -1,5 +1,6 @@
 package com.bankaapp.data.repository
 
+import android.util.Log
 import androidx.annotation.Size
 import com.bankaapp.data.dao.NoteDao
 import com.bankaapp.data.domain.repository.NoteRepository
@@ -33,22 +34,45 @@ class NoteRepositoryImpl @Inject constructor(
         return noteDao.getAllNotes()
     }
 
-    override suspend fun updateNote(note: Note): Result<Unit> {
+    override suspend fun getNoteById(noteId: String): Result<Note?> {
         return try {
-            noteDao.updateNote(note)
-            Result.success(Unit)
+            val note = noteDao.getNoteById(noteId)
+            Result.success(note)
         } catch (e: Exception) {
+            Log.e("NoteRepository", "Error getting note by ID: ${e.message}")
             Result.failure(e)
         }
     }
 
-    override suspend fun deleteNote(note: Note): Result<Unit> {
+    override suspend fun updateNote(id: String, title: String, content: String): Result<Note> {
         return try {
-            noteDao.deleteNote(note)
-            Result.success(Unit)
+            val updatedNote = Note(
+                id = id,
+                title = title,
+                content = content,
+                createdAt = System.currentTimeMillis()
+            )
+            noteDao.updateNote(updatedNote)
+            Result.success(updatedNote)
         } catch (e: Exception) {
+            Log.e("NoteRepository", "Error updating note: ${e.message}")
             Result.failure(e)
         }
+    }
+
+    override suspend fun deleteNote(noteId: String): Result<Unit> {
+        return try {
+            noteDao.deleteNoteById(noteId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e("NoteRepository", "Error deleting note: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+
+    override fun observeNoteById(id: String): Flow<Note?> {
+        return noteDao.observeNoteById(id)
     }
 
 //    override fun searchNotes(query: String): Flow<List<Note>> {

@@ -17,6 +17,9 @@ sealed class BankaScreens : Route {
     data object NotesScreen : BankaScreens()
 
     @Serializable
+    data class NotesDetailScreen(val noteId: String) : BankaScreens()
+
+    @Serializable
     data object CreateNoteScreen : BankaScreens()
 
 

@@ -40,28 +40,4 @@ object AppModule {
 
     }
 
-    @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): NoteDatabase {
-        return Room.databaseBuilder(
-            context,
-            NoteDatabase::class.java,
-            "note_database"
-        )
-            .fallbackToDestructiveMigration(true)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideNoteDao(database: NoteDatabase): NoteDao {
-        return database.noteDao()
-    }
-
-
-    @Singleton
-    @Provides
-    fun provideNoteRepository(noteDao: NoteDao): NoteRepository {
-        return NoteRepositoryImpl(noteDao)
-    }
 }
