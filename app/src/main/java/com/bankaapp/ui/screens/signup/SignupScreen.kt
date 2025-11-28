@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignupScreen(navController: NavController, vm: SignupViewModel = hiltViewModel() ) {
 
-    var email by remember { mutableStateOf(" ") }
+    var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf( "") }
@@ -75,26 +75,26 @@ fun SignupScreen(navController: NavController, vm: SignupViewModel = hiltViewMod
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val signupState by vm.signupState.collectAsState()
 
-
-    // Check if form is valid
-    val isFormValid = emailValidation is ValidationResult.Valid &&
-            passwordValidation is ValidationResult.Valid &&
-            email.isNotBlank() &&
-            password.isNotBlank()
-
-
     fun validateForm(): Boolean {
         emailValidation = Validator.validateEmail(email)
         passwordValidation = Validator.validatePassword(password)
         phoneValidation = Validator.validatePhoneNumber(phone)
         confirmPasswordValidation = Validator.validateConfirmPassword(password, confirmPassword)
         showValidationErrors = true
-        return isFormValid
+
+        // Return true only if ALL validations pass
+        return emailValidation is ValidationResult.Valid &&
+                passwordValidation is ValidationResult.Valid &&
+                phoneValidation is ValidationResult.Valid &&
+                confirmPasswordValidation is ValidationResult.Valid
     }
+
 
     fun handleSignup() {
         if (validateForm()) {
             vm.signUp(email, password)
+        } else {
+            errorMessage = "Please fix the errors bellow before continuing"
         }
     }
 
@@ -350,30 +350,3 @@ fun SignupScreen(navController: NavController, vm: SignupViewModel = hiltViewMod
         }
     }
 }
-
-
-
-//
-//    fun handleSignup() {
-//        if (validateForm()) {
-//            coroutineScope.launch {
-//                isLoading = true
-//                try {
-//
-//                    vm.signUp(email, password)
-//
-//                    // Simulate
-//                    kotlinx.coroutines.delay(1000)
-//
-//
-//                    // Navigate on success
-//                    navController.navigate(BankaScreens.LoginScreen)
-//                } catch (e: Exception) {
-//                    // Handle login error
-//
-//                } finally {
-//                    isLoading = false
-//                }
-//            }
-//        }
-//    }

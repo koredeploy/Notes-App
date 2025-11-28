@@ -1,4 +1,3 @@
-
 package com.bankaapp.ui.screens.createnote
 
 import androidx.compose.foundation.background
@@ -66,11 +65,7 @@ fun CreateNoteScreen(
     }
 
     // Handle navigation
-    LaunchedEffect(shouldNavigateBack) {
-        if (shouldNavigateBack) {
-            navController.popBackStack()
-        }
-    }
+
 
     // Handle state changes
     LaunchedEffect(noteState) {
@@ -81,7 +76,7 @@ fun CreateNoteScreen(
             }
             is NoteScreenState.NoteAdded -> {
                 showLoading = false
-                shouldNavigateBack = true
+                navController.popBackStack()
             }
             is NoteScreenState.Error -> {
                 showLoading = false
@@ -127,15 +122,16 @@ fun CreateNoteScreen(
                     color = Color.Black
                 )
             }
-
-            // Done button
             TextButton(
                 onClick = {
+
                     if (noteTitle.isNotBlank() || noteContent.isNotBlank()) {
+                        showLoading = true
                         viewModel.addNote(
                             title = noteTitle.ifBlank { "Untitled" },
                             content = noteContent
                         )
+//                        navController.popBackStack()
                     } else {
                         errorMessage = "Please add some content to save"
                     }
